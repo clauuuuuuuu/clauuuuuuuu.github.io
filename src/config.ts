@@ -5,7 +5,7 @@ export const SITE = {
   desc: "claudia chan's personal website",
   title: "claudia's page",
   ogImage: "bear.jpg",
-  lightAndDarkMode: true,
+  lightAndDarkMode: false,
   postPerIndex: 4,
   postPerPage: 4,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
