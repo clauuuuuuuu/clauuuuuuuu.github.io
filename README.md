@@ -1,0 +1,1 @@
+based on the [AstroPaper](https://astro-paper.pages.dev/) template
