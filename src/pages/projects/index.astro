@@ -5,7 +5,6 @@ import Main from "@/layouts/Main.astro";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import { slugifyStr } from "@/utils/slugify";
 import { SITE } from "@/config";
 
 const projects = await getCollection("projects", ({ data }) => !data.draft);
@@ -43,14 +42,7 @@ const sortedProjects = projects.sort(
                   )}
                 </div>
               )}
-              <span
-                style={{
-                  viewTransitionName: slugifyStr(
-                    data.title.replaceAll(".", "-")
-                  ),
-                }}
-                class="inline-block text-lg font-medium text-accent decoration-dashed underline-offset-4 group-hover:underline"
-              >
+              <span class="inline-block text-lg font-medium text-accent decoration-dashed underline-offset-4 group-hover:underline">
                 {data.title}
               </span>
             </a>
