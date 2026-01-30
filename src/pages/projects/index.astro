@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
 import Main from "@/layouts/Main.astro";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
@@ -22,12 +23,28 @@ const sortedProjects = projects.sort(
     <ul>
       {
         sortedProjects.map(({ id, data }) => (
-          <li class="my-6">
-            <a
-              href={`/projects/${id}/`}
-              class="inline-block text-lg font-medium text-accent decoration-dashed underline-offset-4 hover:underline"
-            >
-              {data.title}
+          <li class="border-b border-border py-6 last:border-b-0">
+            <a href={`/projects/${id}/`} class="group block">
+              {data.thumbnail && (
+                <div class="mb-3 w-1/2 overflow-hidden rounded-lg border border-border">
+                  {typeof data.thumbnail === "string" ? (
+                    <img
+                      src={data.thumbnail}
+                      alt={data.title}
+                      class="h-24 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  ) : (
+                    <Image
+                      src={data.thumbnail}
+                      alt={data.title}
+                      class="h-24 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  )}
+                </div>
+              )}
+              <span class="inline-block text-lg font-medium text-accent decoration-dashed underline-offset-4 group-hover:underline">
+                {data.title}
+              </span>
             </a>
             <p>{data.description}</p>
           </li>

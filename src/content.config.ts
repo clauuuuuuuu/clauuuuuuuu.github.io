@@ -35,6 +35,7 @@ const projects = defineCollection({
       featured: z.boolean().optional(),
       draft: z.boolean().optional(),
       ogImage: image().or(z.string()).optional(),
+      thumbnail: image().or(z.string()).optional(),
     }),
 });
 
