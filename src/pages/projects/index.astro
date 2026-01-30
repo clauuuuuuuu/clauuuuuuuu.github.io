@@ -1,0 +1,39 @@
+---
+import { getCollection } from "astro:content";
+import Main from "@/layouts/Main.astro";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { SITE } from "@/config";
+
+const projects = await getCollection("projects", ({ data }) => !data.draft);
+
+// Sort by date, newest first
+const sortedProjects = projects.sort(
+  (a, b) =>
+    new Date(b.data.pubDatetime).getTime() -
+    new Date(a.data.pubDatetime).getTime()
+);
+---
+
+<Layout title={`projects | ${SITE.title}`}>
+  <Header />
+  <Main pageTitle="projects" pageDesc="things i've built">
+    <ul>
+      {
+        sortedProjects.map(({ id, data }) => (
+          <li class="my-6">
+            <a
+              href={`/projects/${id}/`}
+              class="inline-block text-lg font-medium text-accent decoration-dashed underline-offset-4 hover:underline"
+            >
+              {data.title}
+            </a>
+            <p>{data.description}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </Main>
+  <Footer />
+</Layout>
