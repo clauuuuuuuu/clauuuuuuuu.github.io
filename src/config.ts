@@ -3,7 +3,7 @@ export const SITE = {
   author: "Chan Shu Ying Claudia Chan",
   profile: "https://sychan.io/",
   desc: "Personal website of Chan Shu Ying Claudia Chan (Claudia Chan), CUHK Medicine student.",
-  title: "Chan Shu Ying Claudia Chan",
+  title: "claudia chan",
   ogImage: "bear.jpg",
   keywords: [
     "Chan Shu Ying",
