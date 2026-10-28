@@ -1,10 +1,26 @@
 export const SITE = {
-  website: "http://sychan.io/", // replace this with your deployed domain
-  author: "claudia chan",
-  profile: "http://sychan.io/",
-  desc: "claudia chan's personal website",
-  title: "claudia's page",
+  website: "https://sychan.io/", // replace this with your deployed domain
+  author: "Chan Shu Ying Claudia Chan",
+  profile: "https://sychan.io/",
+  desc: "Personal website of Chan Shu Ying Claudia Chan (Claudia Chan), CUHK Medicine student.",
+  title: "Chan Shu Ying Claudia Chan",
   ogImage: "bear.jpg",
+  keywords: [
+    "Chan Shu Ying",
+    "Claudia Chan",
+    "Chan Shu Ying Claudia",
+    "CUHK Medicine",
+    "CUHK med Claudia",
+    "research medicine",
+    "medical imaging",
+    "deep learning healthcare",
+  ],
+  alternateNames: ["Chan Shu Ying", "Claudia Chan"],
+  sameAs: [
+    "https://www.linkedin.com/in/claudia-chan-30a388219/",
+    "https://github.com/clauuuuuuuu",
+  ],
+  affiliation: "Faculty of Medicine, The Chinese University of Hong Kong (CUHK)",
   lightAndDarkMode: false,
   showBackButton: true,
   dir: "ltr", // "rtl" | "auto"

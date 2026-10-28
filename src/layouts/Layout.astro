@@ -11,7 +11,8 @@ type Props = {
   profile?: string;
   description?: string;
   ogImage?: string;
-  canonicalURL?: string;
+  canonicalURL?: string | URL;
+  keywords?: string | string[];
   pubDatetime?: Date;
   modDatetime?: Date | null;
   scrollSmooth?: boolean;
@@ -24,28 +25,55 @@ const {
   description = SITE.desc,
   ogImage = SITE.ogImage ? `/${SITE.ogImage}` : "/og.png",
   canonicalURL = new URL(Astro.url.pathname, Astro.url),
+  keywords = SITE.keywords,
   pubDatetime,
   modDatetime,
   scrollSmooth = false,
 } = Astro.props;
 
 const socialImageURL = new URL(ogImage, Astro.url);
+const canonicalHref =
+  typeof canonicalURL === "string" ? canonicalURL : canonicalURL.toString();
+const keywordsContent =
+  typeof keywords === "string" ? keywords : keywords.join(", ");
 
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  headline: `${title}`,
-  image: `${socialImageURL}`,
-  datePublished: `${pubDatetime?.toISOString()}`,
-  ...(modDatetime && { dateModified: modDatetime.toISOString() }),
-  author: [
-    {
-      "@type": "Person",
-      name: `${author}`,
-      ...(profile && { url: profile }),
+const personSchema = {
+  "@type": "Person",
+  name: SITE.author,
+  ...(SITE.alternateNames.length > 0 && { alternateName: SITE.alternateNames }),
+  ...(SITE.affiliation && {
+    affiliation: {
+      "@type": "Organization",
+      name: SITE.affiliation,
     },
-  ],
+  }),
+  ...(SITE.sameAs.length > 0 && { sameAs: SITE.sameAs }),
+  ...(profile && { url: profile }),
 };
+
+const structuredData = pubDatetime
+  ? {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: `${title}`,
+      description,
+      image: `${socialImageURL}`,
+      datePublished: pubDatetime.toISOString(),
+      ...(modDatetime && { dateModified: modDatetime.toISOString() }),
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": canonicalHref,
+      },
+      author: [personSchema],
+    }
+  : {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: `${title}`,
+      description,
+      url: canonicalHref,
+      about: personSchema,
+    };
 ---
 
 <!doctype html>
@@ -58,7 +86,7 @@ const structuredData = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/bear.jpg" />
-    <link rel="canonical" href={canonicalURL} />
+    <link rel="canonical" href={canonicalHref} />
     <meta name="generator" content={Astro.generator} />
 
     <!-- Load Font -->
@@ -72,12 +100,16 @@ const structuredData = {
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <meta name="author" content={author} />
+    <meta name="keywords" content={keywordsContent} />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={pubDatetime ? "article" : "website"} />
+    <meta property="og:site_name" content={SITE.title} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:url" content={canonicalHref} />
     <meta property="og:image" content={socialImageURL} />
 
     <!-- Article Published/Modified time -->
@@ -100,7 +132,7 @@ const structuredData = {
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:url" content={canonicalHref} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={socialImageURL} />

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sychan.io/sitemap-index.xml
+Host: sychan.io
